@@ -34,4 +34,10 @@ public class CustomerRepository {
         var customer = findOne(id);
         customer.ifPresent(c -> entityManager.remove(c));
     }
+
+    public List<Customer> findAllByName(String name) {
+        Query query = entityManager.createQuery("SELECT c FROM Customer c WHERE c.name like :name");
+        query.setParameter("name", name);
+        return (List<Customer>) query.getResultList();
+    }
 }

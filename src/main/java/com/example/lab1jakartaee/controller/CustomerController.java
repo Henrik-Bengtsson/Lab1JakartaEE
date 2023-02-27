@@ -24,8 +24,10 @@ public class CustomerController {
     CustomerMapper customerMapper;
 
     @GET
-    public List<CustomerDto> getAll(){
-        return customerMapper.mapCustomer(repository.findAll());
+    public List<CustomerDto> getAll(@QueryParam("name") String name){
+        if(name == null)
+            return customerMapper.mapCustomer(repository.findAll());
+        return customerMapper.mapCustomer(repository.findAllByName(name));
     }
 
     @GET
