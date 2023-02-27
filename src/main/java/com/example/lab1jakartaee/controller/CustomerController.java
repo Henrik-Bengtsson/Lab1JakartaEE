@@ -1,6 +1,8 @@
 package com.example.lab1jakartaee.controller;
 
+import com.example.lab1jakartaee.dto.CustomerDto;
 import com.example.lab1jakartaee.entity.Customer;
+import com.example.lab1jakartaee.mapper.CustomerMapper;
 import com.example.lab1jakartaee.repository.CustomerRepository;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -18,9 +20,12 @@ public class CustomerController {
     @Inject
     CustomerRepository repository;
 
+    @Inject
+    CustomerMapper customerMapper;
+
     @GET
-    public List<Customer> getAll(){
-        return repository.findAll();
+    public List<CustomerDto> getAll(){
+        return customerMapper.mapCustomer(repository.findAll());
     }
 
     @GET
