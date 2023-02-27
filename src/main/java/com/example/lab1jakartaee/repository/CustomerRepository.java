@@ -8,6 +8,7 @@ import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 @Transactional
@@ -21,7 +22,16 @@ public class CustomerRepository {
         return (List<Customer>) query.getResultList();
     }
 
+    public Optional<Customer> findOne(Long id) {
+        return Optional.ofNullable(entityManager.find(Customer.class, id));
+    }
+
     public void addCustomer(Customer customer) {
         entityManager.persist(customer);
+    }
+
+    public void deleteCustomer(Long id) {
+        var customer = findOne(id);
+        customer.ifPresent(c -> entityManager.remove(c));
     }
 }
