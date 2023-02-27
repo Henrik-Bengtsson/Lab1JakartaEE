@@ -4,7 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -22,16 +24,15 @@ public class Customer {
     @Size(min = 2)
     String surname;
 
-    @NotNull(message = "Email can't be null")
+    @Email(message = "Email should be valid")
     String email;
 
     @NotNull
     @Size(min = 10, max = 10, message = "Phone number should be ten numbers")
-    Integer phoneNumber;
+    String phoneNumber;
 
     @NotNull
-    @Size(min = 10, max = 12, message = "Social security number should be ten or twelve numbers")
-    Integer ssn;
+    Long ssn;
 
     public Long getId() {
         return id;
@@ -65,19 +66,19 @@ public class Customer {
         this.email = email;
     }
 
-    public Integer getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(Integer phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public Integer getSsn() {
+    public Long getSsn() {
         return ssn;
     }
 
-    public void setSsn(Integer ssn) {
+    public void setSsn(Long ssn) {
         this.ssn = ssn;
     }
 }
