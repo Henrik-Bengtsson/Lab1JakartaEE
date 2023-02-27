@@ -35,9 +35,22 @@ public class CustomerRepository {
         customer.ifPresent(c -> entityManager.remove(c));
     }
 
-    public List<Customer> findAllByName(String name) {
+    public List<Customer> findByName(String name) {
         Query query = entityManager.createQuery("SELECT c FROM Customer c WHERE c.name like :name");
         query.setParameter("name", name);
+        return (List<Customer>) query.getResultList();
+    }
+
+    public List<Customer> findBySurname(String surname) {
+        Query query = entityManager.createQuery("SELECT c FROM Customer c WHERE c.surname LIKE :surname");
+        query.setParameter("surname", surname);
+        return (List<Customer>) query.getResultList();
+    }
+
+    public List<Customer> findByFullName(String name, String surname) {
+        Query query = entityManager.createQuery("SELECT c FROM Customer c WHERE c.name like :name And c.surname like :surname");
+        query.setParameter("name", name);
+        query.setParameter("surname", surname);
         return (List<Customer>) query.getResultList();
     }
 }

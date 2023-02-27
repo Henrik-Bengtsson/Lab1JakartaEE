@@ -24,10 +24,14 @@ public class CustomerController {
     CustomerMapper customerMapper;
 
     @GET
-    public List<CustomerDto> getAll(@QueryParam("name") String name){
-        if(name == null)
+    public List<CustomerDto> getAll(@QueryParam("name") String name, @QueryParam("surname") String surname){
+        if(name == null && surname == null)
             return customerMapper.mapCustomer(repository.findAll());
-        return customerMapper.mapCustomer(repository.findAllByName(name));
+        if(name != null && surname != null)
+            return customerMapper.mapCustomer(repository.findByFullName(name, surname));
+        if(name != null)
+            return customerMapper.mapCustomer(repository.findByName(name));
+        return customerMapper.mapCustomer(repository.findBySurname(surname));
     }
 
     @GET
