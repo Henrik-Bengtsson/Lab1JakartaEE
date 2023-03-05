@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -31,6 +32,7 @@ public class Customer {
     String phoneNumber;
 
     @NotNull
+    @Digits(integer = 10, fraction = 0, message = "Social security number should be 10 digits")
     Long ssn;
 
     public Long getId() {
