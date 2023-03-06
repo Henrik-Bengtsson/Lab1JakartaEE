@@ -9,9 +9,21 @@ import java.util.List;
 @ApplicationScoped
 public class CustomerMapper {
 
-    public List<CustomerDto> mapCustomer(List<Customer> customers){
-        return customers.stream().map(customer -> new CustomerDto(
-                customer.getId(), customer.getName(), customer.getSurname(),
-                customer.getEmail(), customer.getPhoneNumber())).toList();
+    public List<CustomerDto> map(List<Customer> customers){
+        return customers.stream().map(CustomerDto::new).toList();
+    }
+
+    public Customer map(CustomerDto customerDto){
+        var c = new Customer();
+        c.setId(customerDto.getId());
+        c.setName(customerDto.getName());
+        c.setSurname(customerDto.getSurname());
+        c.setEmail(customerDto.getEmail());
+        c.setPhoneNumber(customerDto.getPhoneNumber());
+        return c;
+    }
+
+    public CustomerDto map(Customer customer){
+        return new CustomerDto();
     }
 }

@@ -1,6 +1,5 @@
 package com.example.lab1jakartaee.repository;
 
-import com.example.lab1jakartaee.dto.CustomerDto;
 import com.example.lab1jakartaee.entity.Customer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
@@ -44,7 +43,7 @@ public class CustomerRepository {
     }
 
     public List<Customer> findBySurname(String surname) {
-        Query query = entityManager.createQuery("SELECT c FROM Customer c WHERE c.surname LIKE :surname");
+        Query query = entityManager.createQuery("SELECT c FROM Customer c WHERE c.surname like :surname");
         query.setParameter("surname", surname);
         return (List<Customer>) query.getResultList();
     }
@@ -56,12 +55,13 @@ public class CustomerRepository {
         return (List<Customer>) query.getResultList();
     }
 
-    public void update(Long id, @Valid CustomerDto customer) {
+    public Customer update(Long id, @Valid Customer customer) {
         Customer entity = entityManager.find(Customer.class, id);
         entity.setName(customer.getName());
         entity.setSurname(customer.getSurname());
         entity.setEmail(customer.getEmail());
         entity.setPhoneNumber(customer.getPhoneNumber());
         entityManager.persist(entity);
+        return entity;
     }
 }

@@ -32,12 +32,12 @@ public class CustomerController {
             content = @Content(schema = @Schema(implementation = CustomerDto.class)))
     public List<CustomerDto> getAll(@QueryParam("name") String name, @QueryParam("surname") String surname){
         if(name == null && surname == null)
-            return customerMapper.mapCustomer(repository.findAll());
+            return customerMapper.map(repository.findAll());
         if(name != null && surname != null)
-            return customerMapper.mapCustomer(repository.findByFullName(name, surname));
+            return customerMapper.map(repository.findByFullName(name, surname));
         if(name != null)
-            return customerMapper.mapCustomer(repository.findByName(name));
-        return customerMapper.mapCustomer(repository.findBySurname(surname));
+            return customerMapper.map(repository.findByName(name));
+        return customerMapper.map(repository.findBySurname(surname));
     }
 
     @GET
@@ -78,8 +78,7 @@ public class CustomerController {
             @ApiResponse(responseCode = "404", description = "Id not found")})
     public Response updateCustomer(@PathParam("id") Long id, CustomerDto customer){
         if(repository.findOne(id).isPresent()) {
-            repository.update(id, customer);
-            return Response.ok().build();
+            return Response.ok().entity(customerMapper.map(repository.update(id, customerMapper.map(customer)))).build();
         }
         throw new NotFoundException();
     }

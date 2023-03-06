@@ -1,5 +1,7 @@
 package com.example.lab1jakartaee.dto;
 
+import com.example.lab1jakartaee.entity.Customer;
+
 public class CustomerDto {
 
     private Long id;
@@ -11,12 +13,12 @@ public class CustomerDto {
     public CustomerDto() {
     }
 
-    public CustomerDto(Long id, String name, String surname, String email, String phoneNumber) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
+    public CustomerDto(Customer customer) {
+        this.id = customer.getId();
+        this.name = customer.getName();
+        this.surname = customer.getSurname();
+        this.email = customer.getEmail();
+        this.phoneNumber = customer.getPhoneNumber();
     }
 
     public Long getId() {

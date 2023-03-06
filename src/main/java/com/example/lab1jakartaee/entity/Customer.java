@@ -31,7 +31,6 @@ public class Customer {
     @Size(min = 10, max = 10, message = "Phone number should be ten numbers")
     String phoneNumber;
 
-    @NotNull
     @Digits(integer = 10, fraction = 0, message = "Social security number should be 10 digits")
     Long ssn;
 
@@ -81,5 +80,16 @@ public class Customer {
 
     public void setSsn(Long ssn) {
         this.ssn = ssn;
+    }
+
+    public Customer(String name, String surname, String email, String phoneNumber, Long ssn) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.ssn = ssn;
+    }
+
+    public Customer() {
     }
 }
