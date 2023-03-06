@@ -50,7 +50,7 @@ public class CustomerController {
         var customer = repository.findOne(id);
         if(customer.isPresent())
             return Response.ok().entity(customer.get()).build();
-        return Response.status(404).build();
+        throw new NotFoundException();
     }
 
     @POST
@@ -67,7 +67,7 @@ public class CustomerController {
     @ApiResponse(responseCode = "200", description = "Customer deleted")
     public Response deleteOne(@PathParam("id") Long id){
         repository.deleteCustomer(id);
-        return Response.status(202).build();
+        return Response.ok().build();
     }
 
     @PUT
@@ -75,10 +75,12 @@ public class CustomerController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Customer updated",
                     content = @Content(schema = @Schema(implementation = CustomerDto.class))),
-            @ApiResponse(responseCode = "404", description = "Id not found")
-    })
+            @ApiResponse(responseCode = "404", description = "Id not found")})
     public Response updateCustomer(@PathParam("id") Long id, CustomerDto customer){
-        repository.update(id, customer);
-        return Response.ok().build();
+        if(repository.findOne(id).isPresent()) {
+            repository.update(id, customer);
+            return Response.ok().build();
+        }
+        throw new NotFoundException();
     }
 }
