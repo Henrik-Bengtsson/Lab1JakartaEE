@@ -1,11 +1,13 @@
 package com.example.lab1jakartaee.repository;
 
+import com.example.lab1jakartaee.dto.CustomerDto;
 import com.example.lab1jakartaee.entity.Customer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +28,7 @@ public class CustomerRepository {
         return Optional.ofNullable(entityManager.find(Customer.class, id));
     }
 
-    public void addCustomer(Customer customer) {
+    public void addCustomer(@Valid Customer customer) {
         entityManager.persist(customer);
     }
 
@@ -52,5 +54,14 @@ public class CustomerRepository {
         query.setParameter("name", name);
         query.setParameter("surname", surname);
         return (List<Customer>) query.getResultList();
+    }
+
+    public void update(Long id, @Valid CustomerDto customer) {
+        Customer entity = entityManager.find(Customer.class, id);
+        entity.setName(customer.getName());
+        entity.setSurname(customer.getSurname());
+        entity.setEmail(customer.getEmail());
+        entity.setPhoneNumber(customer.getPhoneNumber());
+        entityManager.persist(entity);
     }
 }

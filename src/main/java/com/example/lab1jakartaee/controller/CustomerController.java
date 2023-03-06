@@ -55,4 +55,11 @@ public class CustomerController {
         repository.deleteCustomer(id);
         return Response.status(202).build();
     }
+
+    @PUT
+    @Path("/{id}")
+    public Response updateCustomer(@PathParam("id") Long id, CustomerDto customer){
+        repository.update(id, customer);
+        return Response.ok().build();
+    }
 }
