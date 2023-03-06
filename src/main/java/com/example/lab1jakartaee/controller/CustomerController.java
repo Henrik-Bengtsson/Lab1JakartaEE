@@ -4,6 +4,10 @@ import com.example.lab1jakartaee.dto.CustomerDto;
 import com.example.lab1jakartaee.entity.Customer;
 import com.example.lab1jakartaee.mapper.CustomerMapper;
 import com.example.lab1jakartaee.repository.CustomerRepository;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -24,6 +28,8 @@ public class CustomerController {
     CustomerMapper customerMapper;
 
     @GET
+    @ApiResponse(responseCode = "200", description = "Returns list of customers",
+            content = @Content(schema = @Schema(implementation = CustomerDto.class)))
     public List<CustomerDto> getAll(@QueryParam("name") String name, @QueryParam("surname") String surname){
         if(name == null && surname == null)
             return customerMapper.mapCustomer(repository.findAll());
@@ -36,6 +42,10 @@ public class CustomerController {
 
     @GET
     @Path("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Return customer",
+                    content = @Content(schema = @Schema(implementation = CustomerDto.class))),
+            @ApiResponse(responseCode = "404", description = "Id not found")})
     public Response getOne(@PathParam("id") Long id){
         var customer = repository.findOne(id);
         if(customer.isPresent())
@@ -44,6 +54,9 @@ public class CustomerController {
     }
 
     @POST
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Customer created"),
+            @ApiResponse(responseCode = "400", description = "Wrong syntax")})
     public Response addOne(Customer customer){
         repository.addCustomer(customer);
         return Response.created(URI.create("customers/" + customer.getId())).build();
@@ -51,6 +64,7 @@ public class CustomerController {
 
     @DELETE
     @Path("/{id}")
+    @ApiResponse(responseCode = "200", description = "Customer deleted")
     public Response deleteOne(@PathParam("id") Long id){
         repository.deleteCustomer(id);
         return Response.status(202).build();
@@ -58,6 +72,11 @@ public class CustomerController {
 
     @PUT
     @Path("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Customer updated",
+                    content = @Content(schema = @Schema(implementation = CustomerDto.class))),
+            @ApiResponse(responseCode = "404", description = "Id not found")
+    })
     public Response updateCustomer(@PathParam("id") Long id, CustomerDto customer){
         repository.update(id, customer);
         return Response.ok().build();
